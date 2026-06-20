@@ -6,11 +6,7 @@ A modern real-time collaborative whiteboard built using **React, TypeScript, Fab
 
 ## 🌐 Live Demo
 
-🔗 **Frontend:** https://your-frontend-url.vercel.app
-
-🔗 **Backend:** https://your-backend-url.onrender.com
-
-🎥 **Demo Video:** https://your-demo-video-link
+🎥 **Demo Link:** https://sync-board-73tuaj36v-nothi.vercel.app
 
 ---
 
@@ -18,7 +14,7 @@ A modern real-time collaborative whiteboard built using **React, TypeScript, Fab
 
 Add screenshots of your application here.
 
-![Preview](./assets/preview.png)
+![Preview](./preview.png)
 
 ---
 

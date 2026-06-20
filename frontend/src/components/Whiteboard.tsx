@@ -62,7 +62,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({
     };
     canvas.on('path:created', handlePathCreated);
 
-    const handleMouseMove = (e: fabric.IEvent<MouseEvent>) => {
+    const handleMouseMove = (e: any) => {
       const pointer = canvas.getPointer(e.e);
 
       socket.emit('cursor-move', {
@@ -170,7 +170,10 @@ canvas.requestRenderAll();
       socket.off('cursor-move');
       socket.off('user-disconnected');
 
-      Object.values(otherCursorsRef.current).forEach((cursor) => canvas.remove(cursor));
+      Object.values(otherCursorsRef.current).forEach((cursor) => {
+      canvas.remove(cursor.circle);
+      canvas.remove(cursor.label);
+});
       otherCursorsRef.current = {};
     };
   }, []);
@@ -232,7 +235,11 @@ canvas.requestRenderAll();
   const handleDownload = () => {
     const canvas = canvasRef.current;
     if (canvas) {
-      const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
+      const dataURL = canvas.toDataURL({
+        format: 'png',
+        quality: 1,
+        multiplier: 1,
+      });
       const link = document.createElement('a');
       link.href = dataURL;
       link.download = 'whiteboard.png';

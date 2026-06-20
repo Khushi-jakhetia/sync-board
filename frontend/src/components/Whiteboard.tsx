@@ -4,14 +4,26 @@ import { socket } from '../utils/socket';
 
 interface WhiteboardProps {
   sessionId: string;
+  username: string;
 }
 
-const Whiteboard: React.FC<WhiteboardProps> = ({ sessionId }) => {
+const Whiteboard: React.FC<WhiteboardProps> = ({
+  sessionId,
+  username,
+}) => {
   const canvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const undoStack = useRef<fabric.Object[]>([]);
   const redoStack = useRef<fabric.Object[]>([]);
-  const otherCursorsRef = useRef<Record<string, fabric.Circle>>({});
+  const otherCursorsRef = useRef<
+  Record<
+    string,
+    {
+      circle: fabric.Circle;
+      label: fabric.Text;
+    }
+  >
+>({});
   const [isErasing, setIsErasing] = useState(false);
 
   // Init Canvas
@@ -52,10 +64,11 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ sessionId }) => {
 
     const handleMouseMove = (e: fabric.IEvent<MouseEvent>) => {
       const pointer = canvas.getPointer(e.e);
+
       socket.emit('cursor-move', {
         x: pointer.x,
         y: pointer.y,
-        socketId: socket.id,
+        username,
       });
     };
     canvas.on('mouse:move', handleMouseMove);
@@ -82,36 +95,65 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ sessionId }) => {
       canvas.loadFromJSON(data, () => canvas.renderAll());
     });
 
-    socket.on('cursor-move', ({ x, y, socketId }) => {
-      if (socketId === socket.id) return;
-      const existing = otherCursorsRef.current[socketId];
-      if (!existing) {
-        const circle = new fabric.Circle({
-          left: x,
-          top: y,
-          radius: 4,
-          fill: 'red',
-          stroke: 'black',
-          strokeWidth: 1,
-          originX: 'center',
-          originY: 'center',
-          selectable: false,
-          evented: false,
-        });
-        canvas.add(circle);
-        otherCursorsRef.current[socketId] = circle;
-      } else {
-        existing.set({ left: x, top: y });
-      }
-      canvas.requestRenderAll();
+    socket.on(
+  'cursor-move',
+  ({ x, y, socketId, username }) => {
+if (socketId === socket.id) return;
+
+const existing =
+  otherCursorsRef.current[socketId];
+
+if (!existing) {
+  const circle = new fabric.Circle({
+    left: x,
+    top: y,
+    radius: 4,
+    fill: 'red',
+    selectable: false,
+    evented: false,
+  });
+
+  const label = new fabric.Text(username, {
+    left: x + 10,
+    top: y - 15,
+    fontSize: 12,
+    fill: 'red',
+    selectable: false,
+    evented: false,
+  });
+
+  canvas.add(circle);
+  canvas.add(label);
+
+  otherCursorsRef.current[socketId] = {
+    circle,
+    label,
+  };
+} else {
+  existing.circle.set({
+    left: x,
+    top: y,
+  });
+
+  existing.label.set({
+    left: x + 10,
+    top: y - 15,
+  });
+}
+
+canvas.requestRenderAll();
     });
 
     socket.on('user-disconnected', (socketId) => {
-      const circle = otherCursorsRef.current[socketId];
-      if (circle) {
-        canvas.remove(circle);
-        delete otherCursorsRef.current[socketId];
-      }
+    const cursor =
+      otherCursorsRef.current[socketId];
+
+    if (cursor) {
+      canvas.remove(cursor.circle);
+      canvas.remove(cursor.label);
+
+      delete otherCursorsRef.current[socketId];
+    }
     });
 
     return () => {
@@ -134,7 +176,10 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ sessionId }) => {
   }, []);
 
   useEffect(() => {
-    socket.emit('join-session', sessionId);
+    socket.emit('join-session', {
+  sessionId,
+  username,
+});
     socket.emit('request-canvas');
     return () => {
       socket.emit('leave-session', sessionId);
@@ -231,26 +276,31 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ sessionId }) => {
       <div className="row">
         {/* Left Toolbar */}
         <div className="col-12 col-md-2 mb-3 mb-md-0 d-flex flex-md-column align-items-center gap-2">
-          <button onClick={handleUndo} className="btn btn-outline-secondary" title="Undo">
+          <button onClick={handleUndo} className="btn btn-outline-primary" title="Undo">
             <i className="bi bi-arrow-counterclockwise"></i>
           </button>
-          <button onClick={handleRedo} className="btn btn-outline-secondary" title="Redo">
+          <button onClick={handleRedo} className="btn btn-outline-info" title="Redo">
             <i className="bi bi-arrow-clockwise"></i>
           </button>
           <button
-            onClick={() => setIsErasing(prev => !prev)}
-            className={`btn ${isErasing ? 'btn-danger' : 'btn-outline-dark'}`}
+          onClick={() => setIsErasing(prev => !prev)}
+          className={`btn ${
+            isErasing
+              ? 'btn-warning'
+              : 'btn-outline-warning'
+          }`}
+
             title="Eraser"
           >
             <i className="bi bi-eraser"></i>
           </button>
-          <button onClick={handleClear} className="btn btn-outline-warning" title="Clear All">
+          <button onClick={handleClear} className="btn btn-outline-danger" title="Clear All">
             <i className="bi bi-trash"></i>
           </button>
           <button onClick={handleDownload} className="btn btn-outline-success" title="Download">
             <i className="bi bi-download"></i>
           </button>
-          <button onClick={toggleDrawingMode} className="btn btn-outline-dark" title="Toggle Mode">
+          <button onClick={toggleDrawingMode} className="btn btn-outline-warning" title="Toggle Mode">
             <i className="bi bi-pencil"></i>
           </button>
           <button onClick={handleAddText} className="btn btn-outline-info" title="Add Text">

@@ -1,110 +1,227 @@
-## 🧼 Collaborative Whiteboard App
+# 🚀 SyncBoard
 
-A real-time collaborative whiteboard built with **React**, **Fabric.js**, and **Socket.io**. Users can draw freely, undo/redo their actions, erase objects, and collaborate live with others.
-
-[Demo] https://github.com/user-attachments/assets/b2e1bbb1-ab7b-4b99-88fc-e77f687d71d5
-<video src="https://github.com/user-attachments/assets/b2e1bbb1-ab7b-4b99-88fc-e77f687d71d5"></video>
+A modern real-time collaborative whiteboard built using **React, TypeScript, Fabric.js, and Socket.IO**. Users can create shared drawing sessions, collaborate live, view participant cursors with usernames, and work together on a synchronized canvas in real time.
 
 ---
 
+## 🌐 Live Demo
 
+🔗 **Frontend:** https://your-frontend-url.vercel.app
 
+🔗 **Backend:** https://your-backend-url.onrender.com
 
-### 🚀 Features
-
-* 🔊 Freehand Drawing with Pencil Tool
-* 🔄 Undo and Redo Functionality
-* ❌ Erase Individual Objects by Clicking
-* 🌐 Real-Time Collaboration with Socket.io
-* 📱 Fully Responsive Canvas
+🎥 **Demo Video:** https://your-demo-video-link
 
 ---
 
-### 🛠️ Tech Stack
+## 📸 Preview
 
-* **Frontend**: React, TypeScript, Fabric.js
-* **Realtime**: Socket.io
-* **Styling**: Bootstrap / Tailwind (Optional)
+Add screenshots of your application here.
+
+![Preview](./assets/preview.png)
 
 ---
 
-### 📦 Installation
+## ✨ Features
 
-```bash
-git clone https://github.com/prathamesh-kothalkar/realtime-whiteboard.git
-cd realtime-whiteboard
+- 🎨 Freehand Drawing
+- 🌐 Real-Time Collaboration
+- 👥 Live User Presence Counter
+- 🖱️ Live Cursor Tracking with Usernames
+- 🧑‍🤝‍🧑 Session-Based Collaboration
+- 📋 Copy Session ID
+- 📨 Share Invite Link
+- 🔄 Undo Functionality
+- 🔁 Redo Functionality
+- 🧹 Clear Canvas
+- ✏️ Add Text Objects
+- 🎯 Adjustable Brush Size
+- 🌈 Custom Brush Colors
+- 🌙 Dark Mode
+- 📥 Download Canvas as PNG
+- 📱 Fully Responsive Design
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- React
+- TypeScript
+- Fabric.js
+- Bootstrap
+- Socket.IO Client
+
+### Backend
+
+- Node.js
+- Express.js
+- Socket.IO
+
+### Deployment
+
+- Vercel
+- Render / Railway
+
+---
+
+## 📂 Project Structure
+
+```text
+syncboard/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   └── Whiteboard.tsx
+│   │   ├── utils/
+│   │   │   └── socket.ts
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   │
+│   └── package.json
+│
+├── backend/
+│   ├── src/
+│   │   ├── server.ts
+│   │   └── socket.ts
+│   │
+│   └── package.json
+│
+└── README.md
 ```
 
 ---
 
-### ▶️ Running the App
+## ⚙️ Installation
 
-#### Start Server (Socket.io):
+### Clone Repository
+
+```bash
+git clone https://github.com/your-username/syncboard.git
+
+cd syncboard
+```
+
+---
+
+## ▶️ Run Backend
 
 ```bash
 cd backend
+
 npm install
+
 npm run dev
 ```
 
-#### Start Client:
+Backend runs on:
+
+```text
+http://localhost:3001
+```
+
+---
+
+## ▶️ Run Frontend
 
 ```bash
 cd frontend
+
+npm install
+
 npm run dev
 ```
-#### Start Keycloak:
-```bash
-cd keycloak
-docker-compose up
-```
 
-Make sure the frontend is connecting to the correct WebSocket server (`localhost:PORT`).
+Frontend runs on:
 
----
-
-### 💻 Usage
-
-* Use your mouse to draw freely on the canvas.
-* Click **Undo** or **Redo** to step backward/forward.
-* Toggle **Eraser Mode** to remove objects by clicking.
-* Connect multiple tabs to test real-time sync.
-
----
-
-### 🔧 Upcoming Features
-
-* Save canvas as image or PDF
-* Chat while collaborating
-* Multi-page whiteboards
-* Drag-to-erase or brush eraser
-
----
-
-### 📁 Project Structure
-
-```
-whiteboard-app/
-├── frontend/
-│   ├── components/
-│   │   └── Whiteboard.tsx
-│   ├── utils/
-│   │   └── socket.ts
-│   ├── App.tsx
-│   └── ...
-├── backend/
-│   └── index.js
-├── README.md
-└── package.json|
-├── keycloak/
- └── docker-compose.ybl
+```text
+http://localhost:5173
 ```
 
 ---
 
+## 🎯 How to Use
 
-### 🙌 Credits
+### Create a Session
 
-* [Fabric.js](http://fabricjs.com/) for canvas abstraction
-* [Socket.io](https://socket.io/) for real-time events
-* Bootstrap for styling
+1. Enter your name.
+2. Click **Create New Session**.
+3. A unique session ID will be generated.
+
+### Join a Session
+
+1. Enter your name.
+2. Enter the Session ID.
+3. Click **Join Session**.
+
+### Share Session
+
+- Copy Session ID
+- Copy Invite Link
+- Send it to teammates
+
+### Collaborate
+
+- Draw in real time
+- View other users' cursors
+- See active participant count
+- Add text annotations
+- Download the whiteboard as PNG
+
+---
+
+## 📡 Real-Time Features
+
+### Live Drawing
+
+All drawings are instantly synchronized across connected users.
+
+### Live Cursor Tracking
+
+Users can see:
+
+- Cursor position
+- Username
+- Real-time movement
+
+### User Presence
+
+- Online participant count
+- Join/Leave updates
+- Session-based collaboration
+
+### Session Management
+
+Each whiteboard session is isolated using Socket.IO rooms.
+
+---
+
+## 🚀 Future Improvements
+
+- 💬 Team Chat
+- 📌 Sticky Notes
+- 📄 Multi-Page Whiteboards
+- ☁️ Cloud Storage
+- 🖼️ Image Uploads
+- 🎤 Voice Collaboration
+- 📂 Save Boards
+- 🤖 AI Assistant
+
+---
+
+## 👩‍💻 Author
+
+**Khushi Jakhetia**
+
+Built using React, TypeScript, Fabric.js, and Socket.IO to enable seamless real-time collaboration.
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a star ⭐ on GitHub.
+
+Contributions, issues, and feature requests are always welcome.

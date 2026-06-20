@@ -10,7 +10,6 @@ const App = () => {
   const [loading, setLoading] = useState<Boolean>(true);
   const [sessionId, setSessionId] = useState<string>("");
   const [inputSessionId, setInputSessionId] = useState<string>("");
-  //const initializedRef = useRef<Boolean>(false); 
   const [userCount, setUserCount] = useState(1);
   const [username, setUsername] = useState("");
   const [notification, setNotification] = useState("");

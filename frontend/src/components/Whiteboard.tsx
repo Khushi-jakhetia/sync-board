@@ -107,7 +107,7 @@ if (!existing) {
   const circle = new fabric.Circle({
     left: x,
     top: y,
-    radius: 4,
+    radius: 5,
     fill: 'red',
     selectable: false,
     evented: false,
